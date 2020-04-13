@@ -1,9 +1,10 @@
+#include "queue.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "harness.h"
-#include "queue.h"
 
 /*
  * Create empty queue.
@@ -36,9 +37,18 @@ bool q_insert_head(queue_t *q, char *s)
 {
     list_ele_t *newh;
     /* TODO: What should you do if the q is NULL? */
+    if (!q) {
+        return false;
+    }
     newh = malloc(sizeof(list_ele_t));
     /* Don't forget to allocate space for the string and copy it */
     /* What if either call to malloc returns NULL? */
+    newh->value = malloc(strlen(s));
+    if (!newh->value) {
+        free(newh);
+        return false;
+    }
+    strncpy(newh->value, s, strlen(s) + 1);
     newh->next = q->head;
     q->head = newh;
     return true;
